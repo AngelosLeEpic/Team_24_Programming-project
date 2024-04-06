@@ -316,7 +316,7 @@ void ReloadEvent() {
   }
 
   QueriesSelect selectQuery = new QueriesSelect();
-  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
 
   // screen setup
