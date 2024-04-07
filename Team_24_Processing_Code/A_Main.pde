@@ -238,7 +238,7 @@ void mouseClicked() {
 void ReloadEvent() {
   // setup place holder values
   boolean depTime;
-  int num1;
+  int time1;
   int num2;
 
   String selectedArrivalStation = "";
