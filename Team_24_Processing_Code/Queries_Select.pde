@@ -4,6 +4,7 @@ class QueriesSelect extends Queries {
     super();
   }
   
+  //STATIC SELELCT STATEMENTS
   ArrayList<DelaysDataPoint> getRowsDelayGraph() {
     ArrayList<DelaysDataPoint> dataList = new ArrayList<DelaysDataPoint>();
     try {
@@ -25,7 +26,7 @@ class QueriesSelect extends Queries {
     }
     
     return dataList;
-}
+  }
 
   ArrayList<BarDataPoint> getRowsBarGraph() {
     
@@ -81,28 +82,13 @@ class QueriesSelect extends Queries {
     
     String word = "";
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
+    println(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
     try {   
         Statement stmt = connection.createStatement();
         
         // Construct the WHERE clause dynamically
         StringBuilder whereClauseBuilder = new StringBuilder();
         String column = depTrue ? "DEP_TIME" : "ARR_TIME";
-
-        // Time range filter
-        if (lowerVal != 0 && upperVal != 0){
-          if (lowerVal < upperVal) {
-            whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
-          } else {
-            whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
-          }
-        }
-        else if (lowerVal != 0){
-          whereClauseBuilder.append(column).append(" <= ").append(lowerVal);
-        }
-        else if (upperVal != 0){
-          whereClauseBuilder.append(column).append(" >= ").append(upperVal);
-        }
-        
         
         // Departure airport filter
         if (depAirport != null && !depAirport.isEmpty()) {
@@ -119,11 +105,35 @@ class QueriesSelect extends Queries {
             }
             whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
         }
+
+        // Time range filter
+        if (lowerVal != 0 && upperVal != 0){
+          if (whereClauseBuilder.length() > 0) {
+            whereClauseBuilder.append(" AND ");
+          }
+          if (lowerVal < upperVal) {
+            whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
+          } 
+          else {
+            whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
+          }
+        }
+        else if (lowerVal != 0){
+          if (whereClauseBuilder.length() > 0) {
+            whereClauseBuilder.append(" AND ");
+          }
+          whereClauseBuilder.append(column).append(" <= ").append(lowerVal);
+        }
+        else if (upperVal != 0){
+          if (whereClauseBuilder.length() > 0) {
+            whereClauseBuilder.append(" AND ");
+          }
+          whereClauseBuilder.append(column).append(" >= ").append(upperVal);
+        }
         
         
         // Date range filter
-        println(startDateRange);
-        if (startDateRange != null && endDateRange != null && !startDateRange.isEmpty() && !endDateRange.isEmpty()) {
+        if (startDateRange != null && !startDateRange.isEmpty() && endDateRange != null && !endDateRange.isEmpty()) {
             if (whereClauseBuilder.length() > 0) {
                 whereClauseBuilder.append(" AND ");
             }
@@ -138,13 +148,13 @@ class QueriesSelect extends Queries {
           if (whereClauseBuilder.length() > 0) {
             whereClauseBuilder.append(" AND ");
           }
-          whereClauseBuilder.append("FL_DATE <= '").append(startDateRange);
+          whereClauseBuilder.append("FL_DATE <= '").append(startDateRange).append("'");
         }
         else if (endDateRange != null && !endDateRange.isEmpty()){
           if (whereClauseBuilder.length() > 0) {
-            whereClauseBuilder.append("FL_DATE >= '").append(endDateRange);
+            whereClauseBuilder.append(" AND ");
           }
-            
+          whereClauseBuilder.append("FL_DATE >= '").append(endDateRange).append("'");
         }
         
         // Construct the full SQL query
@@ -152,8 +162,7 @@ class QueriesSelect extends Queries {
           word = " WHERE ";
         }
  
-        String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " 
-                        + super.tableName + word + whereClauseBuilder.toString();
+        String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " + super.tableName + word + whereClauseBuilder.toString();
         println(query);
         ResultSet resultSet = stmt.executeQuery(query);
         

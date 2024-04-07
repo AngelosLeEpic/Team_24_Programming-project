@@ -119,13 +119,8 @@ class QueriesInitial extends Queries {
                       int indexOfSpace = originalString.indexOf(' ');
                       String modifiedString = indexOfSpace != -1 ? originalString.substring(0, indexOfSpace) : originalString;
                       String[] parts = modifiedString.split("/");
-                      String rearrangedString = "";
-                      for (int j = parts.length - 1; j >= 0; j--) {
-                        rearrangedString += parts[j];
-                        if (j != 0) {
-                          rearrangedString += "-"; // Add '-' between parts, except for the last part
-                        }
-                      }
+                      int j = parts.length - 1;
+                      String rearrangedString = parts[j] + "-" + parts[j-2] + "-" + parts[j-1] ;
                       queryBuilder.append("'").append(rearrangedString).append("'");
 
 
