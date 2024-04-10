@@ -145,11 +145,11 @@ void setup() {
   
   //DATA SETUP
 
-  QueriesInitial setupQuery = new QueriesInitial();
+  /*QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
-  setupQuery.insertRows();
+  setupQuery.insertRows();*/
 
   TextBoxFont = loadFont("default.vlw");
   headingFont = loadFont("Heading.vlw");
@@ -208,13 +208,13 @@ void setup() {
   rightButton = loadImage("right.png");
   
   
-  carrierAA = loadImage(sketchPath() +"/data/airline carriers/aa.png");
-  carrierAS = loadImage(sketchPath() +"/data/airline carriers/as.png");
-  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/b6.png");
+  carrierAA = loadImage(sketchPath() +"/data/airline carriers/AA.png");
+  carrierAS = loadImage(sketchPath() +"/data/airline carriers/AS.png");
+  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/B6.png");
   carrierG4 = loadImage(sketchPath() +"/data/airline carriers/G4.png");
-  carrierHA = loadImage(sketchPath() +"/data/airline carriers/ha.png");
+  carrierHA = loadImage(sketchPath() +"/data/airline carriers/HA.png");
   carrierNK = loadImage(sketchPath() +"/data/airline carriers/NK.png");
-  carrierWN = loadImage(sketchPath() +"/data/airline carriers/wn.png");
+  carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
   carrierUA = loadImage(sketchPath() +"/data/airline carriers/UA.png");
   carrierDL = loadImage(sketchPath() +"/data/airline carriers/DL.png");
   
@@ -246,7 +246,7 @@ void setup() {
 
   graphP = new GraphPie(1300, 600, 700, 700);
   graphB1 = new GraphBar1(600, 250, 1200, 700);
-  graphS = new SimpleGraph(550, 500, 1400, 1000);
+  graphS = new SimpleGraph(550, 300, 1300, 550);
   graphB2 = new GraphBar(600, 250, 1200, 700);
   graphD = new DensityGraph(850, 250, 650, 650);
   graphT = new GraphTimeAccuracy(600, 500, 1200, 300);
@@ -441,7 +441,7 @@ void ReloadEvent() {
   valuesB1 = selectQuery.getRowsBarGraph1(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
   for (int i = 0; i < valuesB1.size(); i++){
     BarDataPoint1 data = valuesB1.get(i);
-    println(data.FLIGHT_COUNT);
+    //println(data.FLIGHT_COUNT);
   }
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data

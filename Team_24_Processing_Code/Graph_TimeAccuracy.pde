@@ -17,7 +17,7 @@ class GraphTimeAccuracy extends Graph {
     
     int lineThickness = 2;
     int incrementCount = 20;
-    int incrementUnits = ((maxDeviation+20)/incrementCount) * 2;
+    int incrementUnits = ((maxDeviation+incrementCount)/incrementCount) * 2;
     int incrementSpace = (int) boxLength/incrementCount;
 
     // drawing main box

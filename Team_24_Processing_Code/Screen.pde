@@ -141,7 +141,7 @@ class Screen
       text("Time: " + D.ARR_TIME, xpos, ypos + h / 10 * 3);
       text("Time: " + D.DEP_TIME, xpos, ypos + h/2 + h/4);
       fill(BUTTON_OFF);
-      text("Diverted", xpos+ w/2, ypos + h / 2);
+      text("DIVERTED", xpos+ w/2, ypos + h / 2);
     } else
     {
       fill(BUTTON_OFF);
@@ -161,24 +161,38 @@ class Screen
 
   void renderTab2()
   { 
+    textAlign(CENTER,CENTER);
+    textFont(headingFont);
     switch(displayedGraph)
     {
     case 0:
+      text("FLIGHT EXPECTANCY", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphP.drawPieChart(valuesP);
       break;
     case 1:
+      text("FLIGHTS PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphB1.drawBarChart(valuesB1);
       break;
     case 2:
-      graphS.draw(valuesDS);
+    text("FLIGHTS PER HOUR", (displayWidth+TAB_WIDTH)/2, height*0.16);
+    textFont(TextBoxFont);
+      //graphS.draw(valuesDS);
       break;
     case 3:
+      text("DISTANCE PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphB2.drawBarChart(valuesB2);
       break;
     case 4:
+      text("HEATMAP OF ROUTES", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphD.draw(valuesA, valuesDS);
       break;
     case 5:
+      text("AVERAGE TIME DELAY PER CARRIER (MIN)", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphT.draw(valuesT);
     default:
       //println("No graph found");
