@@ -7,12 +7,12 @@ import java.util.regex.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import processing.core.PApplet;
 
 // THEMES
 
-enum THEMES
-{
-    DEFAULT,
+enum THEMES {
+  DEFAULT,
     GIRLBOSS,
     BOYBOSS,
     DAY,
@@ -23,6 +23,7 @@ enum THEMES
     STELLAR,
     COLOURBLIND
 }
+
 String themeNames[] = new String[] {"GIRLBOSS", "BOYBOSS", "DAY", "DUSK", "COSMIC", "RUST", "MARINE", "STELLAR", "COLOURBLIND"};
 WidgetDropDown ThemeSelection;
 
@@ -44,11 +45,6 @@ PImage reloadButton;
 PImage leftButton;
 PImage rightButton;
 
-/*
-PImage cancelledButton;
-PImage delayedButton;
-PImage undisturbedButton;*/
-
 PImage carrierAA;
 PImage carrierAS;
 PImage carrierB6;
@@ -60,37 +56,31 @@ PImage carrierUA;
 PImage carrierDL;
 
 // Takes in the name of a carrier and returns the associated image
-PImage nameToLogo(String name)
-{
-  switch(name)
-  {
-    case "AA":
-      return carrierAA;
-    case "AS":
-      return carrierAS;
-    case "B6":
-      return carrierB6;
-    case "G4":
-      return carrierG4;
-    case "HA":
-      return carrierHA;
-    case "NK":
-      return carrierNK;
-    case "WN":
-      return carrierWN;
-    case "UA":
-      return carrierUA;
-    case "DL":
-      return carrierDL;
-    default:
-      return null;
+PImage nameToLogo(String name) {
+  switch(name) {
+  case "AA":
+    return carrierAA;
+  case "AS":
+    return carrierAS;
+  case "B6":
+    return carrierB6;
+  case "G4":
+    return carrierG4;
+  case "HA":
+    return carrierHA;
+  case "NK":
+    return carrierNK;
+  case "WN":
+    return carrierWN;
+  default:
+    return null;
   }
 }
 
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 enum WIDGET_TEXT_TYPE {
-    TIME,
+  TIME,
     DATE
 }
 
@@ -136,8 +126,7 @@ int displayedGraph = 0;
 //SETUP FUNCTION
 void setup() {
   fullScreen();
-  screen = new Screen(width, height);
-  
+  screen = new Screen();
   // THEME SETUP
   screen.changeTheme(THEMES.DEFAULT);
   ThemeSelection = new WidgetDropDown(width / 6, 0, (int)(width * 0.10416), (int)(height*0.037037), TextBoxFont, themeNames, "DEFAULT");
@@ -203,7 +192,7 @@ void setup() {
   moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5, null);
   moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5, null);
 
-  
+
   leftButton = loadImage("left.png");
   rightButton = loadImage("right.png");
   
@@ -217,23 +206,10 @@ void setup() {
   carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
   carrierUA = loadImage(sketchPath() +"/data/airline carriers/UA.png");
   carrierDL = loadImage(sketchPath() +"/data/airline carriers/DL.png");
-  
-  /*cancelledFlights = new WidgetButton(width/20, height / 10 * 7, 50, 50, 20);
-  delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
-  undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
-  
-  cancelledButton = loadImage("cancelled.png");
-  delayedButton = loadImage("diverted.png");
-  undisturbedButton = loadImage("uninterrupted.png");*/
-  
-  // Tab 1 setup
-  // please do not move this outside of setup void, for some reason processing does not like that
-
-  // Tab 2 setup
 
 
   // GRAPH SETUP
-  
+
   QueriesSelect queries = new QueriesSelect();
   
   
@@ -260,12 +236,6 @@ void setup() {
 
 void draw() {
 
-  /*
-  undisturbedFlights.render();
-  cancelledFlights.render();
-  delayedFlights.render();
-   */
-
   background(screen.BACKGROUND);
 
   noStroke();
@@ -274,20 +244,15 @@ void draw() {
   moveRight.render();
 
   screen.renderDIP();
-  
+
   ReloadButton.render();
   screen.renderButtons();
-  
-  /*
-  image(cancelledButton, width/20, height / 10 * 7, 50, 50);
-  image(delayedButton, width/20 * 2, height / 10 * 7, 50, 50);
-  image(undisturbedButton, width/20 * 3, height / 10 * 7, 50, 50);*/
-  
+
   image(leftButton, (int)(width * 0.572916), (int)(height * 0.925925), 50, 50);
   image(rightButton, (int)(width * 0.677083), (int)(height * 0.925925), 50, 50);
-  
+
   image(reloadButton, (int) (width * 0.025), (int) (height * 0.88), 75, 75);
-  
+
   switch (currentlyActiveTab) {
   case 0: // user is looking at tab 1
     screen.renderTab1();
@@ -295,7 +260,7 @@ void draw() {
   case 1: // user is looking at tab 2
     screen.renderTab2();
     break;
-  case 2: // user is looking at tab 2
+  case 2: // user is looking at tab 3
     screen.renderTab3();
     break;
   default:
@@ -307,53 +272,54 @@ void draw() {
 }
 
 // Goes through every button on the screen and commands them to check if they have been clicked
-// This method always updated the tab and theme at the end aswell in case the user clicked anything relating to their selection - Angelos
+// This method always updated the tab and theme at the end as well in case the user clicked anything relating to their selection - Angelos
 void mouseClicked() {
-  if (ReloadButton.isClicked()) 
+
+  if (ReloadButton.isClicked())
   {
     ReloadButton.active = true;
     ReloadButton.render();
     ReloadEvent();
-    //screen.renderTab1();
     ReloadButton.active = false;
     ReloadButton.render();
   }
-  for (int i = 0; i < TabButtons.size(); i++) 
+  for (int i = 0; i < TabButtons.size(); i++)
   { // we first investigate if the user is trying to change tabs
     if (TabButtons.get(i).isMouseover()) {  // For every tab button
       TabButtons.get(i).active = true;  // We find the active button
-      for (int j = 0; j < TabButtons.size(); j++) 
+      for (int j = 0; j < TabButtons.size(); j++)
       {
-        if (TabButtons.get(i) != TabButtons.get(j)) 
+        if (TabButtons.get(i) != TabButtons.get(j))
         { // We disable all other buttons
           TabButtons.get(j).active = false;
         }
-      } // This means that that only tab button is on at any given moment, and if the user clicks the same one twice it makes no difference
+      } // This means that only one tab button is on at any given moment, and if the user clicks the same one twice it makes no difference
       break;
     }
   }
   updateTabs();
   screen.pageSelectButtons();
   ThemeSelection.isClicked();
-  if (isDropDownActive) 
+  if (isDropDownActive)
   {
-    for (int i = 0; i < dropDownList.size(); i++) 
+    for (int i = 0; i < dropDownList.size(); i++)
     {
       dropDownList.get(i).isClicked();
     }
-  } else 
+  } else
   {
-    for (int i = 0; i < textBoxList.size(); i++) 
+    for (int i = 0; i < textBoxList.size(); i++)
     {
       textBoxList.get(i).isClicked();
     }
-    for (int i = 0; i < dropDownList.size(); i++) 
+    for (int i = 0; i < dropDownList.size(); i++)
     {
       dropDownList.get(i).isClicked();
     }
   }
 
   screen.changeTheme(stringToEnum(ThemeSelection.selectedValue));
+  updateTabs();
 }
 
 // setup place holder values
@@ -362,14 +328,13 @@ int time1 = 0;
 int time2 = 0;
   
 // creates all query related data pieces and collect the data from input buttons, some of the data is also processed
-// to be compatible with our query system requirements, the filteredData attaylist is then adjusted to contain the new data - Angelos
+// to be compatible with our query system requirements, the filteredData arrayList is then adjusted to contain the new data - Angelos
 void ReloadEvent() {
 
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
   String date1 = null;
   String date2 = null;
-
   // TIME SELECTION
 
   // call the time inputs from the departure and arrival time selection buttons
@@ -407,7 +372,7 @@ void ReloadEvent() {
     date2 = textBoxList.get(1).giveProcessedUserInput();
   } else
   {
-    // if the user did not give a full date seelction we empty date selection, the dates are left null
+    // if the user did not give a full date selection we empty date selection, the dates are left null
     textBoxList.get(0).userInputInvalid();
     textBoxList.get(1).userInputInvalid();
   }
@@ -468,13 +433,13 @@ void keyPressed() {
       textBoxList.get(i).input(key);
     }
   }
-  if(ThemeSelection.amIActive)
+  if (ThemeSelection.amIActive)
   {
     ThemeSelection.searchBarinput(key);
   }
-  for (int i = 0; i < dropDownList.size(); i++) 
+  for (int i = 0; i < dropDownList.size(); i++)
   {
-    if(dropDownList.get(i).amIActive)
+    if (dropDownList.get(i).amIActive)
     {
       dropDownList.get(i).searchBarinput(key);
     }
@@ -493,74 +458,31 @@ void updateTabs() {
 // takes the input of the themes button and returns the selected enum
 // In java there are better ways to do this, but with processing this is as good as it gets - Angelos
 THEMES stringToEnum(String input) {
-    switch(input) {
-        case "DEFAULT":
-            return THEMES.DEFAULT;
-        case "GIRLBOSS":
-            return THEMES.GIRLBOSS;
-        case "BOYBOSS":
-            return THEMES.BOYBOSS;
-        case "DAY":
-            return THEMES.DAY;
-        case "DUSK":
-            return THEMES.DUSK;
-        case "COSMIC":
-            return THEMES.COSMIC;
-        case "RUST":
-            return THEMES.RUST;
-        case "MARINE":
-            return THEMES.MARINE;
-        case "STELLAR":
-            return THEMES.STELLAR;
-        case "COLOURBLIND":
-            return THEMES.COLOURBLIND;
-        default:
-            return THEMES.DEFAULT;
-    }
+  switch(input) {
+  case "DEFAULT":
+    return THEMES.DEFAULT;
+  case "GIRLBOSS":
+    return THEMES.GIRLBOSS;
+  case "BOYBOSS":
+    return THEMES.BOYBOSS;
+  case "DAY":
+    return THEMES.DAY;
+  case "DUSK":
+    return THEMES.DUSK;
+  case "COSMIC":
+    return THEMES.COSMIC;
+  case "RUST":
+    return THEMES.RUST;
+  case "MARINE":
+    return THEMES.MARINE;
+  case "STELLAR":
+    return THEMES.STELLAR;
+  case "COLOURBLIND":
+    return THEMES.COLOURBLIND;
+  default:
+    return THEMES.DEFAULT;
+  }
 }
-
-// This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
-// And that if the user clicks on an active one they are all disabled - Angelos
-
-/*
-void radioButtonsFlightStatus() {
- if (cancelledFlights.isClicked()) {
- if (!cancelledFlights.active) {
- cancelledFlights.active = true;
- delayedFlights.active = false;
- undisturbedFlights.active = false;
- } else {
- cancelledFlights.active = false;
- delayedFlights.active = false;
- undisturbedFlights.active = false;
- }
- }
- if (delayedFlights.isClicked()) {
- if (!delayedFlights.active) {
- cancelledFlights.active = false;
- delayedFlights.active = true;
- undisturbedFlights.active = false;
- } else {
- cancelledFlights.active = false;
- delayedFlights.active = false;
- undisturbedFlights.active = false;
- }
- }
- if (undisturbedFlights.isClicked()) {
- if (!undisturbedFlights.active) {
- cancelledFlights.active = false;
- delayedFlights.active = false;
- undisturbedFlights.active = true;
- } else {
- cancelledFlights.active = false;
- delayedFlights.active = false;
- undisturbedFlights.active = false;
- }
- }
-}
-*/
-
-
 
 void mousePressed()
 { 
@@ -629,24 +551,5 @@ void mouseDragged() {
       // Update the original mouse position
     graphA.offsetX = mouseX - graphA.hoveredNode.x;
     graphA.offsetY = mouseY - graphA.hoveredNode.y;
-  }
-}
-
-// In modern java an enum can be associated to a number, not in processing, this function converts the index of the theme that the user has selected
-// in the theme selection button to the curresponding theme in the enum, this is a product of using processing unfortunetly
-THEMES indexToTheme(int index)
-{
-  switch(index)
-  {
-    case 1:
-      return THEMES.GIRLBOSS;
-    case 2:
-      return THEMES.BOYBOSS;
-    case 3:
-      return THEMES.DAY;
-    case 4:
-      return THEMES.DUSK;
-    default:
-      return THEMES.DEFAULT;
   }
 }
