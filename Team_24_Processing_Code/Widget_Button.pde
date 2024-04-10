@@ -30,7 +30,11 @@ class WidgetButton extends Widget
       text(buttonText, xpos+ wide*0.05, ypos + high*0.5);
     }
   }
-  
+  /**
+   * This method is exclusivly called for the tab buttons
+   * If one of the buttons is active the others are all deactivated to avoid potential bugs
+   * This ensures the user does not somehow have multiple tabs selected
+   */
   void linkedListCheck(ArrayList<WidgetButton> buttonGroup){ // This functions is used for lists of butons where only one button may be on at a time
   // Afte a button is clicked, the button goes through a list that includes itself and it's fellow buttons in the group, and makes sure only it is active
     for(int i = 0; i < buttonGroup.size(); i++)
