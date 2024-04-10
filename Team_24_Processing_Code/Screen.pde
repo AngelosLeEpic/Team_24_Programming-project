@@ -170,7 +170,7 @@ class Screen
       graphB1.drawBarChart(valuesB1);
       break;
     case 2:
-      //graphS.draw(valuesDS);
+      graphS.draw(valuesDS);
       break;
     case 3:
       graphB2.drawBarChart(valuesB2);
@@ -181,7 +181,7 @@ class Screen
     case 5:
       graphT.draw(valuesT);
     default:
-      println("No graph found");
+      //println("No graph found");
       break;
     }
   }

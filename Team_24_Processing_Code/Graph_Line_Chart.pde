@@ -43,7 +43,8 @@ SimpleGraph(int x, int y, int wide, int high){
             
             // Draw the label at the bottom
             textAlign(CENTER, TOP);
-            text(data.ORIGIN + " to " + data.DEST, x, height - 100);
+            textSize(16);
+            text("|" + data.ORIGIN + " to " + data.DEST + "|", x, height - 100);
         }
         endShape();
         

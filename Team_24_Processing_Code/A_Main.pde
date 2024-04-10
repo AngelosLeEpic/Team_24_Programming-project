@@ -119,7 +119,7 @@ GraphBar1 graphB1;
 
 ArrayList<RouteDataPoint> valuesDS;
 DensityGraph graphD;
-//SimpleGraph graphS;
+SimpleGraph graphS;
 
 ArrayList<BarDataPoint2> valuesB2;
 GraphBar graphB2;
@@ -145,11 +145,11 @@ void setup() {
   
   //DATA SETUP
 
-  /*QueriesInitial setupQuery = new QueriesInitial();
+  QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
-  setupQuery.insertRows();*/
+  setupQuery.insertRows();
 
   TextBoxFont = loadFont("default.vlw");
   headingFont = loadFont("Heading.vlw");
@@ -237,22 +237,21 @@ void setup() {
   QueriesSelect queries = new QueriesSelect();
   
   
-  valuesP = queries.getRowsPieChart(depTime, 0000, 2300, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
-  valuesB1 = queries.getRowsBarGraph1(true, 0000, 2300, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
-  valuesB2 = queries.getRowsBarGraph2();
+  valuesP = queries.getRowsPieChart(depTime, time1, time2, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
+  valuesB1 = queries.getRowsBarGraph1(depTime, time1, time2, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
   valuesDS = queries.getBusyRoutes();
-  valuesA = queries.getAllRoutes();
+  valuesB2 = queries.getRowsBarGraph2();
   valuesT = queries.getRowsDelayGraph();
+  valuesA = queries.getAllRoutes();
 
   graphP = new GraphPie(1300, 600, 700, 700);
   graphB1 = new GraphBar1(600, 250, 1200, 700);
+  graphS = new SimpleGraph(550, 500, 1400, 1000);
   graphB2 = new GraphBar(600, 250, 1200, 700);
   graphD = new DensityGraph(850, 250, 650, 650);
-  //graphS = new SimpleGraph(600, 500, 1200, 1000);
-  graphT = new GraphTimeAccuracy(600, 500, 1400, 140);
+  graphT = new GraphTimeAccuracy(600, 500, 1200, 300);
 
-  //Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
-  Graph[] graphs = new Graph[6];
+  Graph[] graphs = {graphP, graphB1, graphS, graphB2, graphD, graphT};
   screen.numberOfGraphs = graphs.length;
 
   // Tab 3 setup
@@ -318,10 +317,6 @@ void mouseClicked() {
     //screen.renderTab1();
     ReloadButton.active = false;
     ReloadButton.render();
-    
-    QueriesSelect queries = new QueriesSelect();
-    valuesP = queries.getRowsPieChart(true, 0000, 2300, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
-    valuesB1 = queries.getRowsBarGraph1(true, 0000, 2300, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
   }
   for (int i = 0; i < TabButtons.size(); i++) 
   { // we first investigate if the user is trying to change tabs
@@ -452,6 +447,10 @@ void ReloadEvent() {
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
+  
+  QueriesSelect queries = new QueriesSelect();
+  valuesP = queries.getRowsPieChart(depTime, time1, time2, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
+  valuesB1 = queries.getRowsBarGraph1(depTime, time1, time2, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
 }
 
 // check user scroll input, and apply the scroll to all active drop down buttons, inactive drop down buttons simply ignore this call - Angelos
