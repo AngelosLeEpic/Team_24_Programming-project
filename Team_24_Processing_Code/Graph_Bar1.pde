@@ -1,5 +1,4 @@
 class GraphBar1 extends Graph {
-    float maxVal = 100;
 
     GraphBar1(int x, int y, int wide, int high) {
         super(x, y, wide, high);
@@ -10,7 +9,6 @@ void drawBarChart(ArrayList<BarDataPoint1> values) {
     float barSpacing = 20;
     float topMargin = 50;
     float leftMargin = 50;
-    int barColour = color(50); // Assuming you want the bar color to be gray
     float barWidth = ((width - leftMargin) / values.size()) - barSpacing;
 
     // Get the maximum flight count
@@ -18,23 +16,42 @@ void drawBarChart(ArrayList<BarDataPoint1> values) {
     for (BarDataPoint1 data : values) {
       maxFlightCount = Math.max(maxFlightCount, data.FLIGHT_COUNT);
     }
+    
+    if (maxFlightCount % 10 != 0)
+    {
+      float max = maxFlightCount;
+      byte lengthOfMax = 0;
+      
+      while (max > 10)
+      {
+        max /= 10;
+        lengthOfMax++;
+      }
+      max += 1;
+      max = round(max);      
+      for(int i = 0; i < lengthOfMax; i++)
+        max *= 10;
+      
+      maxFlightCount = round(max);
+    }
 
     // Loop through the ArrayList of BarDataPoint1 objects to draw each bar
     for (int i = 0; i < values.size(); i++) {
         BarDataPoint1 data = values.get(i);
         // Calculate the height of each bar relative to the canvas height
-        float barHeight = map(data.FLIGHT_COUNT, 0, maxVal, 0, height - topMargin);
+        float barHeight = map(data.FLIGHT_COUNT, 0, maxFlightCount, 0, height - topMargin);
 
         // Calculate the position of each bar
         float x = xpos + leftMargin + i * (barWidth + barSpacing);
         float y = ypos + height - barHeight - topMargin; // Adjusted to start from the bottom of the canvas
 
         // Draw the bar
-        fill(barColour);
+        fill(screen.SECONDARY_COLOR);
         rect(x, y, barWidth, barHeight);
 
         // Draw the label
         textAlign(CENTER, CENTER - 20);
+        fill(screen.TEXT_COLOR);
         text(data.MKT_CARRIER, x + barWidth/2, y - 10);
     }
 
@@ -42,12 +59,12 @@ void drawBarChart(ArrayList<BarDataPoint1> values) {
     drawScale(maxFlightCount, topMargin);
 }
 
-void drawScale(float maxValue, float topMargin) {
-    float step = maxValue / 5; // Determine the step size for the scale
+void drawScale(float maxFlightCount, float topMargin) {
+    float step = maxFlightCount / 5; // Determine the step size for the scale
 
     // Draw tick marks and labels
     for (int i = 0; i <= 5; i++) {
-        float yPos = map(i * step, 0, maxValue, ypos + height - topMargin, ypos);
+        float yPos = map(i * step, 0, maxFlightCount, ypos + height - topMargin, ypos);
 
         // Draw tick mark
         line(xpos + 10, yPos, xpos, yPos);

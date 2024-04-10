@@ -33,7 +33,7 @@ SimpleGraph(int x, int y, int wide, int high){
             RouteDataPoint data = values.get(i);
             
             // Calculate the height of each point relative to the canvas height
-            float pointHeight = ypos/2 + map(data.FLIGHT_COUNT, 0, maxFlightCount, height - topMargin, topMargin);
+            float pointHeight = map(data.FLIGHT_COUNT, 0, maxFlightCount, height + ypos, ypos);
             
             // Calculate the x-coordinate of each point
             float x = xpos + leftMargin + i * pointSpacing;
@@ -43,7 +43,8 @@ SimpleGraph(int x, int y, int wide, int high){
             
             // Draw the label at the bottom
             textAlign(CENTER, TOP);
-            text(data.ORIGIN + " to " + data.DEST, x, height - 100);
+            textSize(16);
+            text(data.ORIGIN + "-" + data.DEST, x, ypos + height*1.1);
         }
         endShape();
         
@@ -57,7 +58,7 @@ SimpleGraph(int x, int y, int wide, int high){
 
         // Draw tick marks and labels
         for (int i = 0; i <= 5; i++) {
-            float yPos = ypos/2 + map(i * step, 0, maxValue, ypos, 0);
+            float yPos = map((i*step), 0, maxValue, height + ypos, ypos);
 
             // Draw tick mark
             stroke(100);
