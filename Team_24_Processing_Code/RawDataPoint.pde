@@ -178,8 +178,8 @@ class BarDataPoint2 extends RawDataPoint {
       println("SQLException: " + e.getMessage());
     }
   }
-  public int getTOTAL_DIST() {
-    return TOTAL_DIST;
+  public float getTOTAL_CO2EMMISIONS() {
+    return TOTAL_DIST*53.3;
   }
   public String getMKT_CARRIER() {
     return MKT_CARRIER;
