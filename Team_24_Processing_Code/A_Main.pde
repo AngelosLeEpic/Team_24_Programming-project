@@ -197,7 +197,7 @@ void setup() {
   // Set tab button text
   TabButtons.get(0).buttonText = "Scheduled flights";
   TabButtons.get(1).buttonText = "Graphs";
-  TabButtons.get(2).buttonText = "Conncting Flights";
+  TabButtons.get(2).buttonText = "Connecting Flights";
 
   // SCROLL BUTTON SETUP
   moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5, null);

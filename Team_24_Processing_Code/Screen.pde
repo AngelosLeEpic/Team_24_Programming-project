@@ -166,12 +166,12 @@ class Screen
     switch(displayedGraph)
     {
     case 0:
-      text("FLIGHT EXPECTANCY", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("FLIGHT EXPECTANCY*", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphP.drawPieChart(valuesP);
       break;
     case 1:
-      text("FLIGHTS PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("FLIGHTS PER CARRIER*", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphB1.drawBarChart(valuesB1);
       break;
